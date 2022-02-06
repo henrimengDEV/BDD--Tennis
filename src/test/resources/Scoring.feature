@@ -1,5 +1,9 @@
 Feature: Player scoring
 
+  Scenario: Players scores start at 0
+    Given a new game
+    Then players scores should be at "0"
+
   Scenario Outline: A player win a point
     Given "Nadal" had <actualScore> points
     And "Djokovic" had <opponentScore> points
@@ -25,5 +29,3 @@ Feature: Player scoring
     And "Djokovic" had "40" points
     When "Nadal" won the point against "Djokovic"
     Then the players are "deuce"
-
-
