@@ -4,28 +4,51 @@ Feature: Player scoring
     Given a new game
     Then players scores should be at "0"
 
-  Scenario Outline: A player win a point
-    Given "Nadal" had <actualScore> points
-    And "Djokovic" had <opponentScore> points
+  @WinBall
+  Scenario Outline: A player win the ball
+    Given "Nadal" is at <actualScore>
+    And "Djokovic" is at "0"
     When "Nadal" won the point against "Djokovic"
     Then "Nadal" should have <expectedScore> points
 
     Examples:
-      | opponentScore | actualScore | expectedScore |
-      | "0"           | "0"         | "15"          |
-      | "0"           | "15"        | "30"          |
-      | "0"           | "30"        | "40"          |
-      | "0"           | "deuce"     | "advantage"   |
-      | "advantage"   | "deuce"     | "deuce"       |
-      | "0"           | "advantage" | "0"           |
+      | actualScore | expectedScore |
+      | "0"         | "15"          |
+      | "15"        | "30"          |
+      | "30"        | "40"          |
 
-  Scenario: A player win the game
-    Given "Nadal" had "40" points
+  @Deuce
+  Scenario: the game become in deuce without advantage
+    Given "Nadal" is at "30"
+    And "Djokovic" is at "40"
+    When "Nadal" won the point against "Djokovic"
+    Then the players are "deuce"
+
+  @Deuce
+  Scenario: the player without advantage wins they are back at deuce
+    Given "Nadal" is at "deuce"
+    And "Djokovic" is at "advantage"
+    When "Nadal" won the point against "Djokovic"
+    Then "Nadal" should have "deuce" points
+    Then "Djokovic" should have "deuce" points
+
+  @Advantage
+  Scenario: the game is in deuce, the winner of a point will have advantage
+    Given "Nadal" is at "deuce"
+    And "Djokovic" is at "deuce"
+    When "Nadal" won the point against "Djokovic"
+    Then "Nadal" should have "advantage" points
+    Then "Djokovic" should have "deuce" points
+
+  @WinGame
+  Scenario: the player with advantage wins the ball he wins the game
+    Given "Nadal" is at "advantage"
+    And "Djokovic" is at "deuce"
     When "Nadal" won the point against "Djokovic"
     Then the winner should be "Nadal"
 
-  Scenario: Players are deuce
-    Given "Nadal" had "30" points
-    And "Djokovic" had "40" points
+  @WinGame
+  Scenario: A player win the game with at least two points more than the opponent
+    Given "Nadal" is at "40"
     When "Nadal" won the point against "Djokovic"
-    Then the players are "deuce"
+    Then the winner should be "Nadal"

@@ -1,17 +1,33 @@
+package fr.esgi.tennis;
+
+import fr.esgi.tennis.Game;
+import fr.esgi.tennis.Player;
+import fr.esgi.tennis.Score;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 
 import javax.management.InvalidAttributeValueException;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class ScoringStepDefinition {
 
-    private Game game = new Game();
+    private Game game;
+
+    @Before
+    public void setUp() {
+        Map<String, Player> players = new HashMap<>();
+        players.put("Nadal", new Player("Nadal"));
+        players.put("Djokovic", new Player("Djokovic"));
+        this.game = Game.of(players);
+    }
 
     @Given("a new game")
     public void a_new_game() {
-        this.game = new Game();
+        // this.game = new fr.esgi.tennis.Game();
     }
 
     @Then("players scores should be at {string}")
@@ -19,8 +35,8 @@ public final class ScoringStepDefinition {
         this.game.players.values().forEach(player -> Assertions.assertEquals(Score.of(expectedScore), player.score));
     }
 
-    @Given("{string} had {string} points")
-    public void the_player_had_actual_score_points(String playerName, String actualScore) {
+    @Given("{string} is at {string}")
+    public void the_player_is_at(String playerName, String actualScore) {
         this.game.players.get(playerName).score = Score.of(actualScore);
     }
 

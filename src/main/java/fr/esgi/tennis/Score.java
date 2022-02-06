@@ -1,3 +1,5 @@
+package fr.esgi.tennis;
+
 public enum Score {
     LOVE("0"),
     FIFTEEN("15"),

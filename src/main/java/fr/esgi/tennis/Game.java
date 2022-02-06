@@ -1,5 +1,6 @@
+package fr.esgi.tennis;
+
 import javax.management.InvalidAttributeValueException;
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Game {
@@ -7,11 +8,14 @@ public final class Game {
     public Map<String, Player> players;
     public Player winner;
 
-    public Game() {
-        players = new HashMap<>();
-        players.put("Nadal", new Player("Nadal"));
-        players.put("Djokovic", new Player("Djokovic"));
+    private Game() {
         this.winner = null;
+    }
+
+    public static Game of(Map<String, Player> players) {
+        Game game = new Game();
+        game.players = players;
+        return game;
     }
 
     public void increaseScore(String winnerName, String opponentName) throws InvalidAttributeValueException {

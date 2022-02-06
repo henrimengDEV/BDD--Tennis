@@ -1,3 +1,5 @@
+package fr.esgi.tennis;
+
 public final class Player {
 
     public String name;
