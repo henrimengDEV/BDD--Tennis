@@ -1,4 +1,4 @@
-package fr.esgi.tennis;
+package fr.esgi.tennis.enumeration;
 
 public enum Score {
     LOVE("0"),
@@ -8,18 +8,22 @@ public enum Score {
     DEUCE("deuce"),
     ADVANTAGE("advantage");
 
-    public String value;
+    private final String value;
+
     Score(String value) {
         this.value = value;
     }
 
-    public static Score of(String value) {
+    public String getValue() {
+        return value;
+    }
 
+    public static Score of(String value) {
         for (Score score : Score.values()) {
             if (score.value.equalsIgnoreCase(value))
                 return score;
         }
-
         throw new IllegalArgumentException();
     }
 }
+
